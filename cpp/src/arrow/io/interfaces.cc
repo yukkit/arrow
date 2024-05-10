@@ -264,15 +264,16 @@ class FileSegmentReader
   int64_t nbytes_;
 };
 
-Result<std::shared_ptr<InputStream>> RandomAccessFile::GetStream(
-    std::shared_ptr<RandomAccessFile> file, int64_t file_offset, int64_t nbytes) {
+Result<std::shared_ptr<InputStream>> RandomAccessFile::GetStream(int64_t file_offset,
+                                                                 int64_t nbytes) {
   if (file_offset < 0) {
     return Status::Invalid("file_offset should be a positive value, got: ", file_offset);
   }
   if (nbytes < 0) {
     return Status::Invalid("nbytes should be a positive value, got: ", nbytes);
   }
-  return std::make_shared<FileSegmentReader>(std::move(file), file_offset, nbytes);
+  auto self = std::dynamic_pointer_cast<RandomAccessFile>(shared_from_this());
+  return std::make_shared<FileSegmentReader>(self, file_offset, nbytes);
 }
 
 // -----------------------------------------------------------------------

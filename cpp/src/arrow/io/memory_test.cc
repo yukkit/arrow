@@ -324,8 +324,8 @@ TEST(TestRandomAccessFile, GetStream) {
 
   std::shared_ptr<InputStream> stream1, stream2;
 
-  ASSERT_OK_AND_ASSIGN(stream1, RandomAccessFile::GetStream(file, 0, 10));
-  ASSERT_OK_AND_ASSIGN(stream2, RandomAccessFile::GetStream(file, 9, 16));
+  ASSERT_OK_AND_ASSIGN(stream1, file->GetStream(0, 10));
+  ASSERT_OK_AND_ASSIGN(stream2, file->GetStream(9, 16));
 
   ASSERT_OK_AND_EQ(0, stream1->Tell());
 
